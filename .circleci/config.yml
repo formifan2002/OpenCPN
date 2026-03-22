@@ -154,6 +154,7 @@ std-filters: &std-filters
         - build
         - flatpak
         - dpt
+        - fix-rapidjson-crash
 
 
 workflows:
