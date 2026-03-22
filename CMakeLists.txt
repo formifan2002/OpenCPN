@@ -2692,6 +2692,7 @@ if (APPLE)
       --background ${CMAKE_SOURCE_DIR}/buildosx/background.png --window-pos 200
       120 --window-size 500 300 --icon-size 80 --icon OpenCPN.app 120 150
       --hide-extension OpenCPN.app --app-drop-link 390 145 --no-internet-enable
+      --skip-jenkins # D.B. added because of error during DMG build 
       ${CMAKE_CURRENT_BINARY_DIR}/${PACKAGE_NAME}_${PACKAGE_VERSION}.dmg
       ${CMAKE_INSTALL_PREFIX}/bin/
     DEPENDS ${CMAKE_INSTALL_PREFIX}/bin/OpenCPN.app
