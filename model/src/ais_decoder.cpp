@@ -2526,8 +2526,15 @@ void AisDecoder::updateItem(const std::shared_ptr<AisTargetData> &pTargetData,
         const wxString &callsign =
             item["value"]["communication"]["callsignVhf"].GetString();
         strncpy(pTargetData->CallSign, callsign.c_str(), 7);
+      }else if (update_path == "navigation.courseOverGroundMagnetic") {
+        // Not used, but we parse it here to avoid log messages about unhandled paths
       }
-      
+      else if (update_path == "navigation.datetime") {
+        // Not used, but we parse it here to avoid log messages about unhandled paths
+      }
+      else if (update_path == "navigation.eta") {
+        // Not used, but we parse it here to avoid log messages about unhandled paths
+      }
       if (item["value"].HasMember("mmsi") &&
           1994 != (pTargetData->MMSI) / 100000 &&  // Meteo check
           item["value"]["mmsi"].IsString()) {
