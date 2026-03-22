@@ -2026,9 +2026,6 @@ bool AisDecoder::HandleN2K_129793(const N2000MsgPtr &n2k_msg) {
 //     Handle events from SignalK
 //----------------------------------------------------------------------------------
 void AisDecoder::HandleSignalK(const SignalKMsgPtr &sK_msg) {
-  // D.B. added log message:
-  wxLogMessage("AisDecoder::HandleSignalK: raw SignalK message: %s",
-                 sK_msg->raw_message.c_str());
   rapidjson::Document root;
 
   root.Parse(sK_msg->raw_message);
