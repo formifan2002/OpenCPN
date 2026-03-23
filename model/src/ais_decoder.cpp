@@ -2230,6 +2230,12 @@ void AisDecoder::updateItem(const std::shared_ptr<AisTargetData> &pTargetData,
     } else if (update_path == "navigation.rateOfTurn" &&
                item["value"].IsNumber()) {
       pTargetData->ROTAIS = 4.733 * sqrt(item["value"].GetDouble());
+    } else if (update_path == "navigation.courseOverGroundMagnetic") {
+        // Created by SignalK plugin signalk-aisstream - not used, but parsed to avoid log messages about unhandled paths
+    } else if (update_path == "navigation.datetime") {
+        // Created by SignalK plugin signalk-aisstream - not used, but parsed to avoid log messages about unhandled paths
+    } else if (update_path == "navigation.destination.eta") {
+        // Created by SignalK plugin signalk-aisstream - not used, but parsed to avoid log messages about unhandled paths
     } else if (update_path == "design.aisShipType") {
       if (item["value"].HasMember("id") && item["value"]["id"].IsNumber()) {
         if (!pTargetData->b_isDSCtarget) {
@@ -2507,13 +2513,7 @@ void AisDecoder::updateItem(const std::shared_ptr<AisTargetData> &pTargetData,
       if (item["value"].IsBool()) {
         pTargetData->met_data.hor_vis_GT = item["value"].GetBool();
       }
-    } else if (update_path == "navigation.courseOverGroundMagnetic") {
-        // Not used, but we parse it here to avoid log messages about unhandled paths
-    } else if (update_path == "navigation.datetime") {
-        // Not used, but we parse it here to avoid log messages about unhandled paths
-    } else if (update_path == "navigation.eta") {
-        // Not used, but we parse it here to avoid log messages about unhandled paths
-    } 
+    }
     else if (update_path.empty()) {
       if (item["value"].HasMember("name") && item["value"]["name"].IsString()) {
         const wxString &name = item["value"]["name"].GetString();
