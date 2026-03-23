@@ -2187,15 +2187,13 @@ void AisDecoder::handleUpdate(const std::shared_ptr<AisTargetData> &pTargetData,
 void AisDecoder::updateItem(const std::shared_ptr<AisTargetData> &pTargetData,
                             bool bnewtarget, const rapidjson::Value &item,
                             wxString &sfixtime) const {
-  if (item.HasMember("path") && item.HasMember("value")) {
-    
+  if (item.HasMember("path") && item.HasMember("value")) {    
     wxString update_path;
     if (item["path"].IsString()) {
       update_path = item["path"].GetString();
     } else {
       return; 
-    }
-    
+    }    
     if (update_path == "navigation.position") {
       if (item["value"].HasMember("latitude") &&
           item["value"].HasMember("longitude") &&
@@ -2508,13 +2506,10 @@ void AisDecoder::updateItem(const std::shared_ptr<AisTargetData> &pTargetData,
                item["value"].IsNumber()) {
       pTargetData->met_data.hor_vis =
           GEODESIC_METERS2NM(item["value"].GetDouble());
-    } else if (update_path ==
-               "environment.outside.horizontalVisibility.overRange") {
-      if (item["value"].IsBool()) {
+    } else if (update_path =="environment.outside.horizontalVisibility.overRange" && 
+                item["value"].IsBool()) {
         pTargetData->met_data.hor_vis_GT = item["value"].GetBool();
-      }
-    }
-    else if (update_path.empty()) {
+    } else if (update_path.empty()) {
       if (item["value"].HasMember("name") && item["value"]["name"].IsString()) {
         const wxString &name = item["value"]["name"].GetString();
         strncpy(pTargetData->ShipName, name.c_str(), SHIP_NAME_LEN - 1);
