@@ -2237,9 +2237,19 @@ void AisDecoder::updateItem(const std::shared_ptr<AisTargetData> &pTargetData,
     } else if (update_path == "navigation.datetime") {
       // Created by SignalK plugin signalk-aisstream - not used, but parsed to
       // avoid log messages about unhandled paths
-    } else if (update_path == "navigation.destination.eta") {
-      // Created by SignalK plugin signalk-aisstream - not used, but parsed to
-      // avoid log messages about unhandled paths
+    } else if (update_path == "navigation.destination.eta" &&
+               item["value"].IsString()) {
+      // Created by SignalK e.g. plugin signalk-aisstream
+      const wxString &eta = item["value"].GetString();
+      if (eta.Len()) {
+        // Parse ISO 8601 date/time
+        wxDateTime tz;
+        ParseGPXDateTime(tz, eta);
+        pTargetData->ETA_Mo = tz.GetMonth();
+        pTargetData->ETA_Day = tz.GetDay();
+        pTargetData->ETA_Hr = tz.GetHour();
+        pTargetData->ETA_Min = tz.GetMinute();
+      }
     } else if (update_path == "design.aisShipType") {
       if (item["value"].HasMember("id") && item["value"]["id"].IsNumber()) {
         if (!pTargetData->b_isDSCtarget) {
@@ -2289,26 +2299,24 @@ void AisDecoder::updateItem(const std::shared_ptr<AisTargetData> &pTargetData,
           pTargetData->DimB = 0;
         }
       }
-    } else if (update_path == "sensors.ais.class") {
-      if (item["value"].IsString()) {
-        wxString aisclass = item["value"].GetString();
-        if (aisclass == "A") {
-          if (!pTargetData->b_isDSCtarget) pTargetData->Class = AIS_CLASS_A;
-        } else if (aisclass == "B") {
-          if (!pTargetData->b_isDSCtarget) {
-            if (!isBuoyMmsi(pTargetData->MMSI))
-              pTargetData->Class = AIS_CLASS_B;
-            else
-              pTargetData->Class = AIS_BUOY;
+    } else if (update_path == "sensors.ais.class" && item["value"].IsString()) {
+      wxString aisclass = item["value"].GetString();
+      if (aisclass == "A") {
+        if (!pTargetData->b_isDSCtarget) pTargetData->Class = AIS_CLASS_A;
+      } else if (aisclass == "B") {
+        if (!pTargetData->b_isDSCtarget) {
+          if (!isBuoyMmsi(pTargetData->MMSI))
+            pTargetData->Class = AIS_CLASS_B;
+          else
+            pTargetData->Class = AIS_BUOY;
 
-            // Class B targets have no status.  Enforce this...
-            pTargetData->NavStatus = UNDEFINED;
-          }
-        } else if (aisclass == "BASE") {
-          pTargetData->Class = AIS_BASE;
-        } else if (aisclass == "ATON") {
-          pTargetData->Class = AIS_ATON;
+          // Class B targets have no status.  Enforce this...
+          pTargetData->NavStatus = UNDEFINED;
         }
+      } else if (aisclass == "BASE") {
+        pTargetData->Class = AIS_BASE;
+      } else if (aisclass == "ATON") {
+        pTargetData->Class = AIS_ATON;
       }
     } else if (update_path == "sensors.ais.fromBow") {
       if (pTargetData->DimB == 0 && pTargetData->DimA != 0) {
