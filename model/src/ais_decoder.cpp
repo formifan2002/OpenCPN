@@ -2187,13 +2187,13 @@ void AisDecoder::handleUpdate(const std::shared_ptr<AisTargetData> &pTargetData,
 void AisDecoder::updateItem(const std::shared_ptr<AisTargetData> &pTargetData,
                             bool bnewtarget, const rapidjson::Value &item,
                             wxString &sfixtime) const {
-  if (item.HasMember("path") && item.HasMember("value")) {    
+  if (item.HasMember("path") && item.HasMember("value")) {
     wxString update_path;
     if (item["path"].IsString()) {
       update_path = item["path"].GetString();
     } else {
-      return; 
-    }    
+      return;
+    }
     if (update_path == "navigation.position") {
       if (item["value"].HasMember("latitude") &&
           item["value"].HasMember("longitude") &&
@@ -2229,11 +2229,14 @@ void AisDecoder::updateItem(const std::shared_ptr<AisTargetData> &pTargetData,
                item["value"].IsNumber()) {
       pTargetData->ROTAIS = 4.733 * sqrt(item["value"].GetDouble());
     } else if (update_path == "navigation.courseOverGroundMagnetic") {
-        // Created by SignalK plugin signalk-aisstream - not used, but parsed to avoid log messages about unhandled paths
+      // Created by SignalK plugin signalk-aisstream - not used, but parsed to
+      // avoid log messages about unhandled paths
     } else if (update_path == "navigation.datetime") {
-        // Created by SignalK plugin signalk-aisstream - not used, but parsed to avoid log messages about unhandled paths
+      // Created by SignalK plugin signalk-aisstream - not used, but parsed to
+      // avoid log messages about unhandled paths
     } else if (update_path == "navigation.destination.eta") {
-        // Created by SignalK plugin signalk-aisstream - not used, but parsed to avoid log messages about unhandled paths
+      // Created by SignalK plugin signalk-aisstream - not used, but parsed to
+      // avoid log messages about unhandled paths
     } else if (update_path == "design.aisShipType") {
       if (item["value"].HasMember("id") && item["value"]["id"].IsNumber()) {
         if (!pTargetData->b_isDSCtarget) {
@@ -2506,9 +2509,10 @@ void AisDecoder::updateItem(const std::shared_ptr<AisTargetData> &pTargetData,
                item["value"].IsNumber()) {
       pTargetData->met_data.hor_vis =
           GEODESIC_METERS2NM(item["value"].GetDouble());
-    } else if (update_path =="environment.outside.horizontalVisibility.overRange" && 
-                item["value"].IsBool()) {
-        pTargetData->met_data.hor_vis_GT = item["value"].GetBool();
+    } else if (update_path ==
+                   "environment.outside.horizontalVisibility.overRange" &&
+               item["value"].IsBool()) {
+      pTargetData->met_data.hor_vis_GT = item["value"].GetBool();
     } else if (update_path.empty()) {
       if (item["value"].HasMember("name") && item["value"]["name"].IsString()) {
         const wxString &name = item["value"]["name"].GetString();
