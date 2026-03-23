@@ -2231,7 +2231,10 @@ void AisDecoder::updateItem(const std::shared_ptr<AisTargetData> &pTargetData,
     } else if (update_path == "navigation.courseOverGroundMagnetic") {
       // Created by SignalK plugin signalk-aisstream - not used, but parsed to
       // avoid log messages about unhandled paths
-    } else if (update_path == "navigation.datetime") {
+    } else if (update_path.StartsWith("navigation.courseGreatCircle")) {
+      // Created by SignalK plugin signalk-aishub-ws- not used, but parsed to
+      // avoid log messages about unhandled paths
+    }  else if (update_path == "navigation.datetime") {
       // Created by SignalK plugin signalk-aisstream - not used, but parsed to
       // avoid log messages about unhandled paths
     } else if (update_path == "navigation.destination.eta") {
